@@ -1,6 +1,7 @@
 import Data_sets
-import xml.etree.ElementTree as ET
-ConfigTree = ET.parse('Config.xml')
-ConfigRoot = ConfigTree.getroot()
-if ConfigRoot[0].text=='True':
-    Data_sets.clear_train_test()
+import Train
+#Data_sets.GenerateDataSets()
+TrainingData=Train.LoadTrainingData()
+#Train.CreateBowVocab(TrainingData)
+Train.ExtractFeatures(TrainingData)
+Classifier=Train.Train_KNN_Clasifier(TrainingData)
