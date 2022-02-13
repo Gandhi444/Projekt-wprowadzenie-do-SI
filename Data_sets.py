@@ -1,14 +1,14 @@
 import os
 import xml.etree.ElementTree as ET
-from collections import Counter
 import shutil
 import random
 
 
 def clear_train_test():
     curentDir = os.getcwd()
-    parentDir=os.path.abspath(os.path.join(curentDir, os.pardir))
-    folders = [parentDir+'/train/annotations', parentDir+'/train/images', parentDir+'/test/images', parentDir+'/test/annotations']
+    parentDir = os.path.abspath(os.path.join(curentDir, os.pardir))
+    folders = [parentDir + '/train/annotations', parentDir + '/train/images', parentDir + '/test/images',
+               parentDir + '/test/annotations']
     for folder in folders:
         for filename in os.listdir(folder):
             if filename.endswith('.xml') or filename.endswith('.png'):
@@ -19,18 +19,17 @@ def clear_train_test():
 def GenerateDataSets():
     clear_train_test()
     random.seed()
-    print('Starting data set generation')
     curentDir = os.getcwd()
     parentDir = os.path.abspath(os.path.join(curentDir, os.pardir))
     total_files = 0
     SpeedLimitIndexs = []
     OtherIndexes = []
-    for base, dirs, files in os.walk(parentDir+'/archive/annotations'):
+    for base, dirs, files in os.walk(parentDir + '/archive/annotations'):
         for Files in files:
             total_files += 1
     for i in range(total_files):
         file_name = 'road' + str(i)
-        tree = ET.parse(parentDir+'/archive/annotations/' + file_name + '.xml')
+        tree = ET.parse(parentDir + '/archive/annotations/' + file_name + '.xml')
         root = tree.getroot()
         object_type = root[4][0].text
         if object_type == 'speedlimit':
@@ -42,11 +41,11 @@ def GenerateDataSets():
         randomElement = random.randrange(len(SpeedLimitIndexs))
         file_name = 'road' + str(SpeedLimitIndexs[randomElement])
         if Counter == 0:
-            shutil.copy(parentDir+'/archive/annotations/' + file_name + '.xml', parentDir+'/test/annotations')
-            shutil.copy(parentDir+'/archive/images/' + file_name + '.png', parentDir+'/test/images')
+            shutil.copy(parentDir + '/archive/annotations/' + file_name + '.xml', parentDir + '/test/annotations')
+            shutil.copy(parentDir + '/archive/images/' + file_name + '.png', parentDir + '/test/images')
         else:
-            shutil.copy(parentDir+'/archive/annotations/' + file_name + '.xml', parentDir+'/train/annotations')
-            shutil.copy(parentDir+'/archive/images/' + file_name + '.png', parentDir+'/train/images')
+            shutil.copy(parentDir + '/archive/annotations/' + file_name + '.xml', parentDir + '/train/annotations')
+            shutil.copy(parentDir + '/archive/images/' + file_name + '.png', parentDir + '/train/images')
         SpeedLimitIndexs.pop(randomElement)
         Counter = (Counter + 1) % 4
 
@@ -55,11 +54,10 @@ def GenerateDataSets():
         randomElement = random.randrange(len(OtherIndexes))
         file_name = 'road' + str(OtherIndexes[randomElement])
         if Counter == 0:
-            shutil.copy(parentDir+'/archive/annotations/' + file_name + '.xml', parentDir+'/test/annotations')
-            shutil.copy(parentDir+'/archive/images/' + file_name + '.png', parentDir+'/test/images')
+            shutil.copy(parentDir + '/archive/annotations/' + file_name + '.xml', parentDir + '/test/annotations')
+            shutil.copy(parentDir + '/archive/images/' + file_name + '.png', parentDir + '/test/images')
         else:
-            shutil.copy(parentDir+'/archive/annotations/' + file_name + '.xml', parentDir+'/train/annotations')
-            shutil.copy(parentDir+'/archive/images/' + file_name + '.png', parentDir+'/train/images')
+            shutil.copy(parentDir + '/archive/annotations/' + file_name + '.xml', parentDir + '/train/annotations')
+            shutil.copy(parentDir + '/archive/images/' + file_name + '.png', parentDir + '/train/images')
         OtherIndexes.pop(randomElement)
         Counter = (Counter + 1) % 4
-    print('finished data set generation')
