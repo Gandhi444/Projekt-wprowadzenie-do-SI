@@ -15,7 +15,18 @@ def LoadTrainingData():
             pngName = root[1].text
             object_type = root[4][0].text
             image = cv2.imread(parentDir + '/train/images/' + pngName)
-            TrainingData.append({"label": object_type, "image": image})
+            image=cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+           # image=cv2.medianBlur(image,3)
+            boundbox = [root[4][5][0].text, root[4][5][1].text, root[4][5][2].text, root[4][5][3].text]
+            for i in range(0, len(boundbox)):
+                boundbox[i] = int(boundbox[i])
+            image2 = image[boundbox[1]:boundbox[3], boundbox[0]:boundbox[2]]
+            if object_type=='speedlimit':
+                #TrainingData.append({"label": object_type, "image": image})
+                TrainingData.append({"label": object_type, "image": image2})
+            else:
+                #TrainingData.append({"label": 'other', "image": image})
+                TrainingData.append({"label": 'other', "image": image2})
     return TrainingData
 
 
@@ -42,9 +53,10 @@ def ExtractFeatures(Data):
         if desc is not None:
             entry['descriptor']=desc
         else:
-            entry['Descriptor']=np.zeros((1,128))
+            entry['descriptor']=np.zeros((1,128))
 def Train_KNN_Clasifier(Data):
-    Classifier=KNeighborsClassifier(5)
+    ExtractFeatures(Data)
+    Classifier=KNeighborsClassifier(7)
     x=[]
     y=[]
     for entry in Data:
