@@ -1,1 +1,7 @@
-
+Klasyfikacja odbywa się poprzez wykorzystanie BAG of Visual words oraz SIFT z biblioteki open CV do pozyskania deskryptorów oraz nastęnie wykorzystuje k nearest neighbours clasifier biblioteki scikit-learn. K=6 wartość ta została dobrana na podstawie porównywania średniej dokładności klasyfikacji różnych K na 100 różnych zbiorów testowych/treningowych.
+Jako dane treningowe podaje wycinek zdjęcia na ktorym znajduję sie obiekt z etykietą speed limit dla znaków ograniczenia prędkości oraz other dla pozostałych.Dodatkowo oraz losowo wycięte fragmenty na których obiektu nie ma, z etykietą other w celu zapewnienia poprawnej klasyfikacji wycinków zawierających tylko fragmenty tła/nieba/budynków.
+Sam program jest podzielony na 5 plików .py. main ,Data_sets ,Train ,Test ,Detection_Classification.
+W pliku Data Sets znajdują sie funkcje które wykorzystywałem do generowania zbiorów terningowych i testowych. Żadna z tych funkcji nie jest aktualnie wywoływana aktualnie w pliku main.
+W pliku Train znajdują się wszystkie fukkcje potrzebne do trenowania programu oraz wczytania danych treningowych.
+W pliku Test znajdują się funkcje które wykorzystywałem do testowania dokładności Klasyfikacji. Żadna z tych funkcji nie jest aktualnie wywoływana w pliku main.
+W pliku Detection_Classification znajdują się właściwe funkcje Klasyfikacj i Detekcji dostosowane do wytycznych. Jednak w main wywołuje jedynie funkcje do klasyfikacji ponieważ nie udało mi się uzyskać zadowalających wyników detekcji.

@@ -19,3 +19,4 @@ if mode == 'classify':
         bufor = {'file': filename, 'bounds': list_of_bounds}
         files_to_clasify.append(bufor)
     Detection_Classification.Classify(files_to_clasify, Classifier)
+
